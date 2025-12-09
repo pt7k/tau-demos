@@ -1,5 +1,9 @@
 # Notes:
-# 1. Change o0stoppingExecution index to a lower number if you want a shorter run than 255 steps
+# 1. Change o0stoppingExecution index to a lower number if you want a shorter run than 256 steps (by being set to index 255 it will go from 0 to 255 hence 256 steps).
 # 2. To redirect results to a file uncomment the line below (note that the first line of the output is the index 0 set by default to F due to using [t-1] offset in the formula, so number 1 will be in row 2, number 2 in row 3 and so on.
+
 # o2result:tau = out file("primes.out")
-r (o0stoppingExecution[255]=1) && (o1tested[0]:bv[8]={0} && o1tested[t]:bv[8]=o1tested[t-1]+{1}) && ((ex x,y x:bv[8]>{1} && y:bv[8]>{1} && x*y=o1tested[t] && x<=o1tested[t]/x && x<=o1tested[t]/y) ?(o2result[t]=0):(o2result[t]=1))
+r (o0stoppingExecution[255] = 1) && (o1tested[0]:bv[8] = {0} && o1tested[t]:bv[8] = o1tested[t-1] + {1}) &&
+((ex x,y x:bv[8] > {1} && y:bv[8] > {1} && x*y = o1tested[t] && x <= o1tested[t] / x && x <= o1tested[t] / y)
+? (o2result[t] = 0) : (o2result[t] = 1))
+q
