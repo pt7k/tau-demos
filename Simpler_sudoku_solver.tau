@@ -1,0 +1,20 @@
+# The example was tested with Tau-lang build 8ed69ded (Github commit short hash).
+
+# Part 1: Solver logic using the 324-bit wide bitvector implementation of 81 by 4 bits table (tab function - x argument is the table contents, n argument is the index) to store a sudoku puzzle solution.
+# The solve statement describes in logical terms rules of the puzzle (81 positions of 9 possible values, for any 2 different positions if either row, col or box is same then their value has to differ). Conversion from position to row, col and box numbers is performed by corresponding helper functions using a precalculated map storing appropriate figures for all 81 positions in 324-bit bitvector constants, while the inp function used for providing inputs converts the puzzle row and column into a corresponding position index (9*row+col)*4bits and adds +1 to the referenced value, as the solution in the x variable is encoded in integers within the (0-8) range, but the inputs are provided in (1-9).
+# Will run the 6 lines of code (one can edit/increase/decrease the number of inp(x,{_},{_}) = {_} && ... statements at the end of the solve formula for setting up a different puzzle). That last line is broken down into a few more lines to accommodate the lengthy puzzle input (26 inp conjunction defining the input for this particular sudoku puzzle). Please note that lines continuation is ensured here by leaving && just before the line breaks (alternatively one can keep the whole solve statement as one line).
+tab(x:bv[324], n:bv[324]) := (x >> ({4} * n)) & {#xf}
+inp(x:bv[324], r:bv[324], c:bv[324]) := ((x >> ({36} * r + {4} * c)) & {#xf}) + {1}
+row(z:bv[324]) := tab({18227089373158611154009716982797990056432914316353721106797724098808504709811527551544085786394624}, z):bv[324]
+col(z:bv[324]) := tab({18075196962046895261317420093292257343385031405661073321771799574996627475588733421172137592631824}, z):bv[324]
+box(z:bv[324]) := tab({18226532990831731545563522876205618580644726619623511864213682731061760795875453071325903514046464}, z):bv[324]
+solve all a:bv[324] (a<{81} -> tab(x:bv[324], a) < {9} && (all b:bv[324] ((b < {81} && a != b && (row(a) = row(b) || col(a) = col(b) || box(a) = box(b))) -> (tab(x, a) != tab(x, b))))) &&
+inp(x,{0},{4}) = {9} && inp(x,{0},{5}) = {4} && inp(x,{0},{7}) = {3} && inp(x,{1},{3}) = {5} && inp(x,{1},{4}) = {1} && inp(x,{1},{8}) = {7} &&
+inp(x,{2},{1}) = {8} && inp(x,{2},{2}) = {9} && inp(x,{2},{7}) = {4} && inp(x,{3},{6}) = {2} && inp(x,{3},{8}) = {8} && inp(x,{4},{1}) = {6} &&
+inp(x,{4},{3}) = {2} && inp(x,{4},{5}) = {1} && inp(x,{4},{7}) = {5} && inp(x,{5},{0}) = {1} && inp(x,{5},{2}) = {2} && inp(x,{6},{1}) = {7} &&
+inp(x,{6},{6}) = {5} && inp(x,{6},{7}) = {2} && inp(x,{7},{0}) = {9} && inp(x,{7},{4}) = {6} && inp(x,{7},{5}) = {5} && inp(x,{8},{1}) = {4} &&
+inp(x,{8},{3}) = {9} && inp(x,{8},{4}) = {7}
+
+# Part2: For decoding the resulting table into 81 row-column-value outputs one can use the Tau interpreter.
+# Will run the following line of code (starts with r for run), then please paste the numerical value of x:= {....} variable from the solver in Part 1 into the i[0]:= input stream prompt here and hit enter.
+r o0[0]:bv[324] = i[0]:bv[324] && o0[t] = o0[t-1] >> {4} && o1decoded[0]:bv[324] = {1} + (i[0] & {#xf}) && o1decoded[t] = {1} + (o0[t] & {#xf}) && o0last[80] = 1 && o0RowCol[0] = {1000}:bv && ((o0RowCol[t-1] % {10} = {8})? (o0RowCol[t] = o0RowCol[t-1] + {2}): (o0RowCol[t] = o0RowCol[t-1] + {1}))
