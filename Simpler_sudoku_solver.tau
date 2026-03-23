@@ -18,3 +18,4 @@ inp(x,{8},{3}) = {9} && inp(x,{8},{4}) = {7}
 # Part2: For decoding the resulting table into 81 row-column-value outputs one can use the Tau interpreter.
 # Will run the following line of code (starts with r for run), then please paste the numerical value of x:= {....} variable from the solver in Part 1 into the i[0]:= input stream prompt here and hit enter.
 r o0[0]:bv[324] = i[0]:bv[324] && o0[t] = o0[t-1] >> {4} && o1decoded[0]:bv[324] = {1} + (i[0] & {#xf}) && o1decoded[t] = {1} + (o0[t] & {#xf}) && o0last[80] = 1 && o0RowCol[0] = {1000}:bv && ((o0RowCol[t-1] % {10} = {8})? (o0RowCol[t] = o0RowCol[t-1] + {2}): (o0RowCol[t] = o0RowCol[t-1] + {1}))
+#
