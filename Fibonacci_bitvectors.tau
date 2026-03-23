@@ -1,9 +1,10 @@
 # A simple example how to store a sequence of short integers in one 64-bit wide bitvector variable in Tau Language.
 
 # A function returns here the n-th 4-bit integer stored in the 64-bit variable x (valid index numbers n for this example are between 0 and 15 fitting 16 times 4 bits in total).
-tab(x:bv[64], n:bv[64]):= (x >> ({4} * n)) & {#xf}
 # We can use this function to pack the first 8 Fibonacci numbers that fit in a 4-bit integer by describing the sequence in a predicate and then running the predicate through the Tau solver.
-fib(x:bv[64], n:bv[64]) := (n:bv[64] < {2}) ? (tab(x:bv[64], n) = n):(tab(x, n) = tab(x, n-{1}) + tab(x, n-{2}))
 # The solver will use the fib predicate for the first 8 numbers stored in x and then fill the remaining spots with 0s.
 # The example was tested with Tau-lang build 8ed69ded (Github commit short hash).
+
+tab(x:bv[64], n:bv[64]):= (x >> ({4} * n)) & {#xf}
+fib(x:bv[64], n:bv[64]) := (n:bv[64] < {2}) ? (tab(x:bv[64], n) = n):(tab(x, n) = tab(x, n-{1}) + tab(x, n-{2}))
 solve all n:bv[64] ((n <= {7})? fib(x:bv[64], n): (n < {16} -> tab(x, n) = {0}))
