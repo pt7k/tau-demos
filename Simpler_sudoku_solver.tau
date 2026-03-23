@@ -20,5 +20,6 @@ inp(x,{4},{3}) = {2} && inp(x,{4},{5}) = {1} && inp(x,{4},{7}) = {5} && inp(x,{5
 inp(x,{6},{6}) = {5} && inp(x,{6},{7}) = {2} && inp(x,{7},{0}) = {9} && inp(x,{7},{4}) = {6} && inp(x,{7},{5}) = {5} && inp(x,{8},{1}) = {4} &&
 inp(x,{8},{3}) = {9} && inp(x,{8},{4}) = {7}
 
+# Hit enter for Part2
 r o0[0]:bv[324] = i[0]:bv[324] && o0[t] = o0[t-1] >> {4} && o1decoded[0]:bv[324] = {1} + (i[0] & {#xf}) && o1decoded[t] = {1} + (o0[t] & {#xf}) && o0last[80] = 1 &&
 o0RowCol[0] = {1000}:bv && ((o0RowCol[t-1] % {10} = {8})? (o0RowCol[t] = o0RowCol[t-1] + {2}): (o0RowCol[t] = o0RowCol[t-1] + {1}))
